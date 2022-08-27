@@ -1,8 +1,37 @@
-[![ESP32Berry](./misc/ESP32Berry_img.jpg)](https://www.that-project.com)
+[![ESP32Berry Latest Ver](./misc/ESP32Berry20220827.jpg)](https://www.that-project.com)
+[![ESP32Berry Initial Ver](./misc/ESP32Berry_img.jpg)](https://www.that-project.com)
 
 ## ESP32Berry Project
 This project is experimental and not yet complete. As it is updated, I will continue to share it through [my channel.](https://www.that-project.com)
 I made a physical keyboard for use with the ESP32. I'm pretty sure to more interesting applications are possible with this.
+
+
+### Version 0.3 
+[![Version0.2 image](./misc/ESP32Berry_img03.gif)](https://youtu.be/UhIXAp2wqjg)
+
+[ESP32Berry, "ESP-NOW Chat App" Version 0.3](https://youtu.be/UhIXAp2wqjg)
+
+In this version 0.3, added a chatting app using ESP-NOW and supported Non-Keyboard ESP32 products. 
+
+#### How to use for other devices
+*Works only in 480x320 resolution. It hasn't been tested enough yet. It will work more stably in the next version.*
+
+ESP32Berry_Config.h
+```
+Remove the #define ESP32BERRY
+```
+ESP32Berry_Display.h
+```
+Set LovyanGFX with the graphic driver ic chip you are using. 
+```
+ESP32Berry_Display.cpp
+```
+If touch calibration is required separately, modify the necessary information in init_tft().
+```
+Partition Scheme
+```
+Since the size of this application is larger than the default partition scheme, it must be changed. (Over 1.4MB)
+```
 
 ### Version 0.2
 [![Version0.2 image](./misc/ESP32Berry_img02.gif)](https://youtu.be/h28_Mvgpe2Y)
