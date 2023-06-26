@@ -2,7 +2,7 @@
 # Welcome to New ESP32Berry Project
 
 This is a new ESP32Berry project space based on T-Deck.
-
+[![T-Deck](./misc/images/t-deck.jpg)
 
 ### MIT License
 
