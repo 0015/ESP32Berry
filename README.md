@@ -1,8 +1,17 @@
 
 # Welcome to New ESP32Berry Project
 
-This is a new ESP32Berry project space based on T-Deck.
+## This is a new ESP32Berry project space based on T-Deck.
+
 ![T-Deck](./misc/images/t-deck.jpg)
+
+## *Updates*
+
+### Unit Test with LovyanGFX in Arduino Platform
+Use LovyanGFX instead of TFT_eSPI to update the screen. This makes it possible to update the screen more quickly than TFT_eSPI. In order to run this without problems, first configure the development environment using the T-Deck library officially supported by LilyGO. https://github.com/Xinyuan-LilyGO/T-Deck
+
+
+![T-Deck w/ LovyanGFX](./misc/images/unit_test_lovyangfx.jpg)
 
 ### MIT License
 
