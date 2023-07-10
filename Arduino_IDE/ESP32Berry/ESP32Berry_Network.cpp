@@ -73,8 +73,6 @@ void ntBeginTask(void *pvParameters) {
   WiFi.mode(WIFI_STA);
   vTaskDelay(100);
   WiFi.begin(instance->_ssid.c_str(),instance->_pwd.c_str());
-  //WiFi.begin("btreecode","ar.length-1");
-  //WiFi.begin("anelalove","TaehaJiyul@");
   vTaskDelete(NULL);
 }
 
