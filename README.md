@@ -10,8 +10,19 @@
 ### Unit Test with LovyanGFX in Arduino Platform
 Use LovyanGFX instead of TFT_eSPI to update the screen. This makes it possible to update the screen more quickly than TFT_eSPI. In order to run this without problems, first configure the development environment using the T-Deck library officially supported by LilyGO. https://github.com/Xinyuan-LilyGO/T-Deck
 
-
 ![T-Deck w/ LovyanGFX](./misc/images/unit_test_lovyangfx.jpg)
+
+### *Version 0.5
+
+- Base Structure
+- LVGL Environment 
+- Home Screen 
+- Second Screen for Apps 
+- Control Panel (Volume/Brightness)
+- Dynamic WiFi Selection 
+- ChatGPT Client
+
+[![Video: Version 0.5](./misc/images/esp32berry_0.5.jpg)](https://youtu.be/5K6rSw9j5iY)
 
 ### MIT License
 
