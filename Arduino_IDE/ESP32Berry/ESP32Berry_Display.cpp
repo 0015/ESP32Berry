@@ -41,7 +41,12 @@ void Display::my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color
 
   tft->startWrite();
   tft->setAddrWindow(area->x1, area->y1, w, h);
-  tft->writePixels((lgfx::rgb565_t *)&color_p->full, w * h);
+
+  //LilyGO changed display on T-Deck: https://github.com/Xinyuan-LilyGO/T-Deck/commit/386e17731448116cb232e8f9aab235844a878819
+  //Thanks to abdallahnatsheh for following fix (https://github.com/abdallahnatsheh/ESP32Berry/commit/ea3ac96166f86d7e5403cf71142c7d39c07c709f#diff-77dbe428847bfb79ecea6c95d8516f5de607867b0fb1b9525474b673a3d80ee7)
+  //tft->writePixels((lgfx::rgb565_t *)&color_p->full, w * h);  //Works correctly on older T-Deck displays.
+  tft->pushColors((uint16_t *)&color_p->full, w * h, false);    //Works correctly on newer T-deck displays 
+  
   tft->endWrite();
 
   lv_disp_flush_ready(disp);
