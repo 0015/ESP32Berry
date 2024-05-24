@@ -1,5 +1,5 @@
 
-# Welcome to New ESP32Berry Project
+# ESP32Berry Project. Join us!
 
 ![T-Deck](./misc/images/t-deck.jpg)
 
