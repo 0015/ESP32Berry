@@ -48,6 +48,9 @@ void displayEventHandler(Menu_Event_t event, void *param)
     case 0:
       instance->appChatGPT = new AppChatGPT(instance->display, instance->system, instance->network, "ChatGPT Client");
       break;
+    case 4:
+      instance->appSettings = new AppSettings(instance->display, instance->system, instance->network, "Settings");
+      break;
     }
 
     break;

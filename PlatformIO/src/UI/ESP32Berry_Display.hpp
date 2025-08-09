@@ -32,17 +32,12 @@ private:
     friend void update_ui_task(void *pvParameters);
     LGFX *tft;
 
-    bool cursor_panel_active = false; // Only initialized once!
-
     lv_indev_drv_t indev_mouse;
-    lv_obj_t *cursor_obj;
 
     lv_obj_t *ui_SliderSpeaker;
     lv_obj_t *ui_SliderBrightness;
     lv_obj_t *ui_ImgBtnWiFi;
     lv_obj_t *ui_BtnWiFi;
-    lv_obj_t *ui_ImgBtnCursor;
-    lv_obj_t *ui_PanelCursor;
 
     lv_obj_t *ui_Main_Screen;
     lv_obj_t *ui_TopPanel;
@@ -76,7 +71,6 @@ private:
     void initLVGL();
     void ui_main();
     void ui_second();
-    void ui_settings();
     void ui_prep_loading();
     void ui_prep_popup_box();
     void ui_popup_open(String title, String msg);
@@ -86,9 +80,11 @@ private:
     typedef void (*FuncPtrInt)(Menu_Event_t, void *);
 
 public:
+    lv_obj_t *cursor_obj;
     lv_obj_t *ui_NotiLabel;
     FuncPtrInt menu_event_cb;
     TaskHandle_t uiNotiTaskHandler;
+    bool cursor_panel_active = false;
     Display(FuncPtrInt callback);
     ~Display();
     void initTFT();
@@ -116,6 +112,10 @@ public:
     void lv_port_sem_give(void);
     int get_display_width();
     int get_display_height();
+    void set_brightness(int v);
+    void show_wifi_panel();
+    void register_speaker_slider(lv_obj_t *slider);
+    void register_wifi_panel(lv_obj_t *wiFiPanel);
 };
 
 // Global instance pointer used by C thunks to forward LVGL callbacks

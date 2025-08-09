@@ -36,6 +36,10 @@ Display::Display(FuncPtrInt callback)
     tft = new LGFX();
     menu_event_cb = callback;
     ui_Focused_Obj = NULL;
+    ui_SliderSpeaker = nullptr;
+    ui_SliderBrightness = nullptr;
+    // ui_PanelCursor = nullptr;
+    // ui_ImgBtnCursor = nullptr;
     initTFT();
 }
 
@@ -112,6 +116,7 @@ void Display::my_touch_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
 bool isSetBrightnessRunning = false;
 void Display::my_mouse_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
 {
+
     if (cursor_panel_active == false)
         return;
 
@@ -335,7 +340,7 @@ void Display::initLVGL()
     bin_sem = xSemaphoreCreateMutex();
     ui_main();
     ui_second();
-    ui_settings();
+    // Settings migrated to AppSettings app. Prepare WiFi panel only when needed.
     ui_prep_loading();
     // ui_prep_popup_box();
 
@@ -348,4 +353,47 @@ void Display::initLVGL()
                             0);
 
     // this->ui_popup_open("Welcome to ESP32Berry Project!", "This project aims to develop useful applications based on the T-Deck device. Let's do a fun project together!\n\n(Version 0.5)");
+}
+
+int Display::get_display_width()
+{
+    return tft->width();
+}
+
+int Display::get_display_height()
+{
+    return tft->height();
+}
+
+void Display::set_brightness(int v)
+{
+    tft->setBrightness(v);
+}
+
+void Display::show_wifi_panel()
+{
+    if (ui_WiFiPanel)
+    {
+        lv_obj_clear_flag(ui_WiFiPanel, LV_OBJ_FLAG_HIDDEN);
+    }
+}
+
+void Display::register_speaker_slider(lv_obj_t *slider)
+{
+    ui_SliderSpeaker = slider;
+    if (pendingVolume >= 0 && ui_SliderSpeaker)
+    {
+        lv_slider_set_value(ui_SliderSpeaker, pendingVolume, LV_ANIM_OFF);
+        pendingVolume = -1;
+    }
+}
+// void Display::register_cursor_btn(lv_obj_t *panel, lv_obj_t *btn)
+// {
+//     // ui_PanelCursor = panel;
+//     // ui_ImgBtnCursor = btn;
+// }
+
+void Display::register_wifi_panel(lv_obj_t *wiFiPanel)
+{
+    ui_WiFiPanel = wiFiPanel;
 }

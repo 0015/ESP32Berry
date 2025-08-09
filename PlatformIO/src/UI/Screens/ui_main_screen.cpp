@@ -14,6 +14,7 @@ void Display::ui_main()
 
     LV_IMG_DECLARE(img_background);
     LV_IMG_DECLARE(icon_chatgpt);
+    LV_IMG_DECLARE(icon_settings);
 
     ui_Main_Screen = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_Main_Screen, LV_OBJ_FLAG_SCROLLABLE);
@@ -144,10 +145,17 @@ void Display::ui_main()
         lv_obj_center(label);
         lv_obj_add_flag(label, LV_OBJ_FLAG_HIDDEN);
 
-        if (i == 0)
+        if (i == 0 || i == 4)
         {
             ui_btn_icon = lv_img_create(obj);
-            lv_img_set_src(ui_btn_icon, &icon_chatgpt);
+            if (i == 0)
+            {
+                lv_img_set_src(ui_btn_icon, &icon_chatgpt);
+            }
+            else
+            { // settings button
+                lv_img_set_src(ui_btn_icon, &icon_settings);
+            }
             lv_obj_set_width(ui_btn_icon, LV_SIZE_CONTENT);
             lv_obj_set_height(ui_btn_icon, LV_SIZE_CONTENT);
             lv_obj_set_align(ui_btn_icon, LV_ALIGN_CENTER);

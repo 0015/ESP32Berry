@@ -14,6 +14,7 @@
 #include "ESP32Berry_Network.hpp"
 #include "ESP32Berry_System.hpp"
 #include "Apps/ChatGPT/ESP32Berry_AppChatGPT.hpp"
+#include "Apps/Settings/ESP32Berry_AppSettings.hpp"
 
 class ESP32Berry
 {
@@ -23,6 +24,7 @@ public:
   Network *network;
   System *system;
   AppChatGPT *appChatGPT;
+  AppSettings *appSettings;
 
   ESP32Berry();
   ~ESP32Berry();

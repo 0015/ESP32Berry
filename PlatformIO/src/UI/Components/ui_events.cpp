@@ -53,23 +53,23 @@ void Display::ui_event_callback(lv_event_t *e)
         lv_obj_clear_flag(ui_WiFiPanel, LV_OBJ_FLAG_HIDDEN);
         lv_obj_add_flag(ui_ControlPanel, LV_OBJ_FLAG_HIDDEN);
     }
-    else if ((target == ui_ImgBtnCursor && event_code == LV_EVENT_CLICKED) || (target == ui_PanelCursor && event_code == LV_EVENT_CLICKED))
-    {
-        // Toggles each time
-        cursor_panel_active = !cursor_panel_active;
-        if (cursor_panel_active)
-        {
-            lv_obj_set_style_bg_color(ui_PanelCursor, lv_color_hex(0x33bd33), LV_PART_MAIN | LV_STATE_DEFAULT); // #33bd33ff
-            lv_obj_set_style_bg_color(ui_ImgBtnCursor, lv_color_hex(0x33bd33), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_clear_flag(cursor_obj, LV_OBJ_FLAG_HIDDEN);
-        }
-        else
-        {
-            lv_obj_set_style_bg_color(ui_PanelCursor, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_set_style_bg_color(ui_ImgBtnCursor, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_add_flag(cursor_obj, LV_OBJ_FLAG_HIDDEN);
-        }
-    }
+    // else if ((target == ui_ImgBtnCursor && event_code == LV_EVENT_CLICKED) || (target == ui_PanelCursor && event_code == LV_EVENT_CLICKED))
+    // {
+    //     // Toggles each time
+    //     cursor_panel_active = !cursor_panel_active;
+    //     if (cursor_panel_active)
+    //     {
+    //         lv_obj_set_style_bg_color(ui_PanelCursor, lv_color_hex(0x33bd33), LV_PART_MAIN | LV_STATE_DEFAULT); // #33bd33ff
+    //         lv_obj_set_style_bg_color(ui_ImgBtnCursor, lv_color_hex(0x33bd33), LV_PART_MAIN | LV_STATE_DEFAULT);
+    //         lv_obj_clear_flag(cursor_obj, LV_OBJ_FLAG_HIDDEN);
+    //     }
+    //     else
+    //     {
+    //         lv_obj_set_style_bg_color(ui_PanelCursor, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    //         lv_obj_set_style_bg_color(ui_ImgBtnCursor, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    //         lv_obj_add_flag(cursor_obj, LV_OBJ_FLAG_HIDDEN);
+    //     }
+    // }
 }
 
 void Display::ui_app_btns_callback(lv_event_t *e)
@@ -85,6 +85,7 @@ void Display::ui_app_btns_callback(lv_event_t *e)
         switch (appBtnLabel.toInt())
         {
         case 0:
+        case 4:
             lv_scr_load_anim(ui_Sub_Screen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 100, 0, false);
             menu_event_cb(APP, lv_label_get_text(label));
             break;
@@ -257,14 +258,4 @@ void Display::lv_port_sem_give(void)
     {
         xSemaphoreGive(bin_sem);
     }
-}
-
-int Display::get_display_width()
-{
-    return tft->width();
-}
-
-int Display::get_display_height()
-{
-    return tft->height();
 }
