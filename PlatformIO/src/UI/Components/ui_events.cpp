@@ -15,6 +15,8 @@ void Display::ui_event_callback(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t *target = lv_event_get_target(e);
+    // Any UI event implies user interaction
+    register_activity();
     if (target == ui_BasePopupCloseBtn && event_code == LV_EVENT_CLICKED)
     {
         lv_obj_add_flag(ui_BasePopup, LV_OBJ_FLAG_HIDDEN);
@@ -30,6 +32,13 @@ void Display::ui_event_callback(lv_event_t *e)
     {
         int sliderValue = lv_slider_get_value(ui_SliderBrightness);
         tft->setBrightness(sliderValue);
+        // Remember user's chosen brightness so inactivity wake restores this
+        previous_brightness = sliderValue;
+        if (screen_dimmed && sliderValue > 0)
+        {
+            // If user moves slider while dimmed, treat as activity and undim immediately
+            screen_dimmed = false;
+        }
     }
     else if (target == ui_SliderSpeaker && event_code == LV_EVENT_VALUE_CHANGED)
     {
@@ -76,6 +85,7 @@ void Display::ui_event_callback(lv_event_t *e)
         String timeoutText = String(sliderValue) + " min";
         lv_label_set_text(ui_LabelScreenTimeoutValue, timeoutText.c_str());
         menu_event_cb(SCREEN_TIMEOUT, reinterpret_cast<void *>(sliderValue));
+        set_screen_timeout(sliderValue);
     }
 }
 

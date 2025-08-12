@@ -37,6 +37,7 @@ Display::Display(FuncPtrInt callback)
     menu_event_cb = callback;
     ui_Focused_Obj = NULL;
     initTFT();
+    last_input_tick = xTaskGetTickCount();
 }
 
 Display::~Display()
@@ -102,6 +103,7 @@ void Display::my_touch_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
         data->state = LV_INDEV_STATE_PR;
         data->point.x = x;
         data->point.y = y;
+        register_activity();
     }
     else
     {
@@ -131,6 +133,7 @@ void Display::my_mouse_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
         if (dir != last_dir[i])
         {
             last_dir[i] = dir;
+            register_activity();
             switch (i)
             {
             case 0:
@@ -214,6 +217,7 @@ void Display::my_key_read(lv_indev_drv_t *indev_drv, lv_indev_data_t *data)
         last_key = act_key;
         Serial.printf("Key: %d\n", last_key);
         HandleKeyboardShortcuts(last_key);
+        register_activity();
     }
     else
     {
@@ -232,6 +236,7 @@ void Display::HandleKeyboardShortcuts(uint32_t key)
             lv_task_handler();
             delay(5);
         }
+        screen_dimmed = true;
     }
     if (key == 4) // shift + speaker  toggle sound
     {
@@ -347,5 +352,82 @@ void Display::initLVGL()
                             &lvgl_task_handle,
                             0);
 
+    // Inactivity monitor task
+    xTaskCreatePinnedToCore(Display::inactivity_task,
+                            "inactivity_task",
+                            4096,
+                            this,
+                            1,
+                            NULL,
+                            1);
+
     // this->ui_popup_open("Welcome to ESP32Berry Project!", "This project aims to develop useful applications based on the T-Deck device. Let's do a fun project together!\n\n(Version 0.5)");
+}
+
+// === Inactivity / Screen Timeout Implementation ===
+
+void Display::register_activity()
+{
+    last_input_tick = xTaskGetTickCount();
+    if (screen_dimmed)
+    {
+        // Wake display gradually
+        fade_backlight_to(previous_brightness, 8, 4);
+        screen_dimmed = false;
+    }
+}
+
+void Display::set_screen_timeout(int minutes)
+{
+    if (minutes < 0)
+        minutes = 0;
+    screen_timeout_minutes = minutes;
+    register_activity();
+}
+
+void Display::fade_backlight_to(uint8_t target, uint8_t step, uint16_t delay_ms)
+{
+    uint8_t current = tft->getBrightness();
+    if (current == target)
+        return;
+    if (current < target)
+    {
+        for (int v = current; v <= target; v += step)
+        {
+            tft->setBrightness(v);
+            vTaskDelay(pdMS_TO_TICKS(delay_ms));
+        }
+    }
+    else
+    {
+        for (int v = current; v >= (int)target; v -= step)
+        {
+            tft->setBrightness(v);
+            vTaskDelay(pdMS_TO_TICKS(delay_ms));
+        }
+    }
+    tft->setBrightness(target);
+}
+
+void Display::inactivity_task(void *param)
+{
+    Display *self = static_cast<Display *>(param);
+    const TickType_t check_delay = pdMS_TO_TICKS(1000);
+    while (true)
+    {
+        vTaskDelay(check_delay);
+        int timeout = self->screen_timeout_minutes;
+        if (timeout <= 0)
+            continue; // Disabled
+        if (self->screen_dimmed)
+            continue; // Already dimmed
+        uint32_t now = xTaskGetTickCount();
+        uint32_t elapsed_ms = (now - self->last_input_tick) * portTICK_PERIOD_MS;
+        if (elapsed_ms >= (uint32_t)timeout * 60000UL)
+        {
+            self->previous_brightness = self->tft->getBrightness();
+            self->fade_backlight_to(0, 4, 8);
+            self->screen_dimmed = true;
+        }
+    }
 }

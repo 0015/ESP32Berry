@@ -48,7 +48,7 @@ void Display::ui_settings()
   lv_obj_set_style_text_opa(ui_LabelScreenTimeoutValue, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
   ui_ScreenTimeout = lv_slider_create(ui_ControlPanel);
-  lv_slider_set_range(ui_ScreenTimeout, 5, 60);
+  lv_slider_set_range(ui_ScreenTimeout, 1, 60);
   lv_obj_set_width(ui_ScreenTimeout, 212);
   lv_obj_set_height(ui_ScreenTimeout, 8);
   lv_obj_set_x(ui_ScreenTimeout, 10);
@@ -62,7 +62,7 @@ void Display::ui_settings()
   lv_obj_set_style_border_color(ui_ScreenTimeout, lv_color_hex(0x000000), LV_PART_KNOB | LV_STATE_DEFAULT);
   lv_obj_set_style_border_opa(ui_ScreenTimeout, 255, LV_PART_KNOB | LV_STATE_DEFAULT);
   lv_obj_set_style_border_width(ui_ScreenTimeout, 1, LV_PART_KNOB | LV_STATE_DEFAULT);
-  lv_slider_set_value(ui_ScreenTimeout, 5, LV_ANIM_OFF);
+  lv_slider_set_value(ui_ScreenTimeout, 1, LV_ANIM_OFF);
   lv_obj_add_event_cb(ui_ScreenTimeout, ui_event_callback_thunk, LV_EVENT_VALUE_CHANGED, NULL);
 
   lv_obj_t *ui_IconBrightness = lv_img_create(ui_ControlPanel);

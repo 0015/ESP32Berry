@@ -61,6 +61,7 @@ void displayEventHandler(Menu_Event_t event, void *param)
     preferences.begin("settings", false);
     preferences.putInt("screen_timeout", timeout);
     preferences.end();
+    instance->display->set_screen_timeout(timeout);
     break;
   }
   }
@@ -117,9 +118,10 @@ void ESP32Berry::begin()
 
   preferences.begin("settings", true);
   int volume = preferences.getInt("volume", 21);
-  int screenTimeout = preferences.getInt("screen_timeout", 5);
+  int screenTimeout = preferences.getInt("screen_timeout", 1);
   preferences.end();
   instance->system->audio->setVolume(volume);
   instance->display->update_volume_slider(volume);
+  instance->display->set_screen_timeout(screenTimeout);
   instance->system->play_audio(AUDIO_BOOT);
 }

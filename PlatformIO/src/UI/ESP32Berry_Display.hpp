@@ -75,6 +75,12 @@ private:
     lv_obj_t *ui_LabelScreenTimeoutValue;
     lv_obj_t *ui_ScreenTimeout;
 
+    // Inactivity / screen timeout tracking
+    uint32_t last_input_tick = 0;      // FreeRTOS tick of last user interaction
+    int screen_timeout_minutes = 5;    // Configured timeout (minutes); 0 means disabled
+    bool screen_dimmed = false;        // Whether we've turned the backlight off due to inactivity
+    uint8_t previous_brightness = 240; // Brightness to restore after wake
+
     uint32_t keypad_get_key();
     void initLVGL();
     void ui_main();
@@ -84,6 +90,10 @@ private:
     void ui_prep_popup_box();
     void ui_popup_open(String title, String msg);
     void HandleKeyboardShortcuts(uint32_t key);
+    void inactivity_task_loop(); // Called by RTOS task wrapper
+    void fade_backlight_to(uint8_t target, uint8_t step, uint16_t delay_ms);
+    static void inactivity_task(void *param);
+    void register_activity(); // Mark activity + wake if needed
 
     String add_battery_icon(int percentage);
     typedef void (*FuncPtrInt)(Menu_Event_t, void *);
@@ -119,6 +129,9 @@ public:
     void lv_port_sem_give(void);
     int get_display_width();
     int get_display_height();
+
+    // Public API for screen timeout
+    void set_screen_timeout(int minutes); // Update timeout config (minutes)
 };
 
 // Global instance pointer used by C thunks to forward LVGL callbacks
