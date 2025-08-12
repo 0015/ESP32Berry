@@ -70,6 +70,13 @@ void Display::ui_event_callback(lv_event_t *e)
             lv_obj_add_flag(cursor_obj, LV_OBJ_FLAG_HIDDEN);
         }
     }
+    else if (target == ui_ScreenTimeout && event_code == LV_EVENT_VALUE_CHANGED)
+    {
+        int sliderValue = lv_slider_get_value(ui_ScreenTimeout);
+        String timeoutText = String(sliderValue) + " min";
+        lv_label_set_text(ui_LabelScreenTimeoutValue, timeoutText.c_str());
+        menu_event_cb(SCREEN_TIMEOUT, reinterpret_cast<void *>(sliderValue));
+    }
 }
 
 void Display::ui_app_btns_callback(lv_event_t *e)

@@ -17,7 +17,8 @@ typedef enum
     WIFI_OFF,
     WIFI_ON,
     APP,
-    SET_AUDIO
+    SET_AUDIO,
+    SCREEN_TIMEOUT
 } Menu_Event_t;
 
 LV_IMG_DECLARE(mouse_cursor_icon);
@@ -71,6 +72,8 @@ private:
     lv_obj_t *ui_BasePopupCloseBtn;
     lv_obj_t *ui_BasePopupTitle;
     lv_obj_t *ui_BasePopupMsg;
+    lv_obj_t *ui_LabelScreenTimeoutValue;
+    lv_obj_t *ui_ScreenTimeout;
 
     uint32_t keypad_get_key();
     void initLVGL();

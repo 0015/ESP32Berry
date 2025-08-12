@@ -30,14 +30,7 @@ void displayEventHandler(Menu_Event_t event, void *param)
   }
   case WIFI_ON:
   {
-    if (param == NULL)
-    {
-      instance->network->WiFiCommend(NETWORK_SCANNING_ON, param);
-    }
-    else
-    {
-      instance->network->WiFiCommend(NETWORK_CONNECTING, param);
-    }
+    instance->network->WiFiCommend(param == NULL ? NETWORK_SCANNING_ON : NETWORK_CONNECTING, param);
     break;
   }
   case APP:
@@ -59,6 +52,14 @@ void displayEventHandler(Menu_Event_t event, void *param)
     instance->display->update_volume_slider(volume);
     preferences.begin("settings", false);
     preferences.putInt("volume", volume);
+    preferences.end();
+    break;
+  }
+  case SCREEN_TIMEOUT:
+  {
+    int timeout = reinterpret_cast<int>(param);
+    preferences.begin("settings", false);
+    preferences.putInt("screen_timeout", timeout);
     preferences.end();
     break;
   }
@@ -116,6 +117,7 @@ void ESP32Berry::begin()
 
   preferences.begin("settings", true);
   int volume = preferences.getInt("volume", 21);
+  int screenTimeout = preferences.getInt("screen_timeout", 5);
   preferences.end();
   instance->system->audio->setVolume(volume);
   instance->display->update_volume_slider(volume);
