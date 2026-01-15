@@ -1,14 +1,16 @@
+# It’s time to say goodbye to ESP32Berry.
 
-# ESP32Berry Project. Join us!
+I had big dreams of building this out with a team of fellow makers, but unfortunately, I wasn't able to find the partners needed to keep the momentum going. Furthermore, with Espressif now distributing the esp_brookesia_phone framework officially, the original mission of this project has been fulfilled by the platform itself.
+
+Thank you to everyone who supported this journey. While this repo is now retired, my work continues! I’ve just released PocketSSH(https://github.com/0015/PocketSSH), a dedicated portable terminal for the T-Deck. If that sounds like your kind of project, I’d love for you to check it out.
+
+
+## ESP32Berry Project. Join us!
 
 ![T-Deck](./misc/images/t-deck.jpg)
 
 ## *Updates*
 05-23-2024: 0_UnitTest_LovyanGFX Updated! 
-
-## Preparing for the next version
-I'm preparing a new ESP32Berry project based on LVGL 9. I'll do my best to share it ASAP.
-![LVGL9](./misc/images/temp_lvgl-9.jpg) 
 
 ### Unit Test with LovyanGFX in Arduino Platform
 Use LovyanGFX instead of TFT_eSPI to update the screen. This makes it possible to update the screen more quickly than TFT_eSPI. In order to run this without problems, first configure the development environment using the T-Deck library officially supported by LilyGO. https://github.com/Xinyuan-LilyGO/T-Deck
